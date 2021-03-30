@@ -14,4 +14,11 @@ describe('checkGuess', () => {
       rightGuessWrongPosition: 4,
     });
   });
+
+  test('one correct code in order', () => {
+    expect(checkGuess(['G', 'G', 'G', 'G'], ['G', 'R', 'O', 'Y'])).toStrictEqual({
+      rightGuessRightPosition: 1,
+      rightGuessWrongPosition: 0,
+    });
+  });
 });
