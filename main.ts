@@ -37,8 +37,6 @@ console.log(secretCode);
 
 const maxGuess = 10;
 let tries = 0;
-let won = false;
-
 
 function validateInput(entry: string[]): boolean {
   if (entry.length != secretCodeSize) {
@@ -56,15 +54,23 @@ function validateInput(entry: string[]): boolean {
   return true;
 }
 
-while (tries < maxGuess && !won) {
+while (tries < maxGuess) {
   console.log("guess #" + (tries + 1));
   let guess = promptSync("what is your guess? ");
   let guessChars = guess.split("");
   let valid = validateInput(guessChars);
   if (valid) {
     tries++;
-    let guessResult = checkGuess(guessChars, secretCode);
-    console.log(guessResult);
+    let { rightGuessRightPosition, rightGuessWrongPosition } = checkGuess(guessChars, secretCode);
+    // console.log(guessResult);
+
+    if (rightGuessRightPosition === secretCodeSize) {
+      console.log('Winner!');
+      break
+    }
+
+    console.log("Black=" + rightGuessRightPosition);
+    console.log("White=" + rightGuessWrongPosition);
   } else {
     console.log("guess is invalid")
   }
