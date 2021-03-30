@@ -28,4 +28,11 @@ describe('checkGuess', () => {
       rightGuessWrongPosition: 1,
     });
   });
+
+  test('no correct code at all', () => {
+    expect(checkGuess(['G', 'G', 'G', 'G'], ['R', 'R', 'R', 'R'])).toStrictEqual({
+      rightGuessRightPosition: 0,
+      rightGuessWrongPosition: 0,
+    });
+  });
 });
