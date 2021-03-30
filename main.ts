@@ -2,25 +2,34 @@
 
 
 // comand line interface.
-const prompt = require('prompt-sync')({ sigint: true });
-
+const promptSync = require('prompt-sync')({ sigint: true });
+import { checkGuess } from './guess';
 
 // ask what's your name
 // todo - figure out why newline breaks this.
 // let name = prompt("what is your name: ");
-let code = [];  // 4 of entries
-const codeSize = 4;
-const PossibleEntries = ["O", "G", "R", "Y"]
-const ResponseOptions = ["B", "P"]
 
+// type EntrysecretCode = "O" | "G" | "R" | "Y"
+
+// type ResponsesecretCode = "B" | "P"
+
+const secretCodeSize = 4;
+let secretCode = Array<string>(secretCodeSize);  // 4 of entries
+
+const PossibleEntries: string[] = ["O", "G", "R", "Y"]
+const PossibleResults: string[] = ["B", "P"]
+
+function isValidCharacter(entry: string): boolean {
+  return PossibleEntries.includes(entry)
+}
 
 // 1. we need the computer to set the sequence
 
-for (let i = 0; i < codeSize; i++) {
-  code[i] = PossibleEntries[Math.floor(Math.random() * PossibleEntries.length)];
+for (let i = 0; i < secretCodeSize; i++) {
+  secretCode[i] = PossibleEntries[Math.floor(Math.random() * PossibleEntries.length)];
 }
 
-console.log(code);
+console.log(secretCode);
 
 
 const maxGuess = 10;
@@ -28,13 +37,14 @@ let tries = 0;
 let won = false;
 
 
-function validateInput(entry) {
-  if (entry.length != codeSize) {
+function validateInput(entry: string[]): boolean {
+  if (entry.length != secretCodeSize) {
+    // TODO: return error
     return false;
   }
 
   for (let i = 0; i < entry.length; i++) {
-    if (!PossibleEntries.includes(entry[i])) {
+    if (!isValidCharacter(entry[i])) {
       // TODO: return error
       return false;
     }
@@ -43,27 +53,17 @@ function validateInput(entry) {
   return true;
 }
 
-function checkGuess(guess) {
-  let rightGuessRightPosition = 0;
-  let rightGuessWrongPosition = 0;
-
-  for (let i = 0; i < guess.length; i++) {
-    if (guess[i] == code[i]) {
-      rightGuessRightPosition++;
-    } else if (code.includes(guess[i])) {
-      rightGuessWrongPosition++;
-    }
-  }
-
-  return [rightGuessRightPosition, rightGuessWrongPosition];
-}
-
 while (tries < maxGuess && !won) {
   console.log("guess #" + (tries + 1));
-  let guess = prompt("what is your guess? ");
-  let valid = validateInput(guess);
+  let guess = promptSync("what is your guess? ");
+  let guessChars = guess.split("");
+  let valid = validateInput(guessChars);
   if (valid) {
     tries++;
+    let guessResult = checkGuess(guessChars, secretCode);
+    console.log(guessResult);
+  } else {
+    console.log("guess is invalid")
   }
   // 2.1 After each guess check if they won
   // 2.2 Check how many were right color (black)
