@@ -16,8 +16,11 @@ import { checkGuess } from './guess';
 const secretCodeSize = 4;
 let secretCode = Array<string>(secretCodeSize);  // 4 of entries
 
-const PossibleEntries: string[] = ["O", "G", "R", "Y"]
-const PossibleResults: string[] = ["B", "P"]
+const PossibleEntries: string[] = ["O", "G", "R", "Y", "P"]
+const PossibleResults: string[] = [
+  "B", // correct in order
+  "W" // correct out of order
+]
 
 function isValidCharacter(entry: string): boolean {
   return PossibleEntries.includes(entry)
