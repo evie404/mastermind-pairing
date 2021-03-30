@@ -81,6 +81,8 @@ while (tries < maxGuess) {
   // 2.4 Augment turn counter - if 10 they lose
 }
 
+console.log("you lost :C")
+console.log("secret is: " + secretCode)
 
 // 2. Then we need to ask the 2nd player 10 guesses
   // 2.1 After each guess check if they won
