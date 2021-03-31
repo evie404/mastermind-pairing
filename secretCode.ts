@@ -1,4 +1,4 @@
-const PossibleEntries: string[] = ["O", "G", "R", "Y", "P"]
+export const PossibleEntries: string[] = ["O", "G", "R", "Y", "P"]
 
 export function generateSecretCode(secretCodeSize: number): string[] {
   let secretCode = Array<string>(secretCodeSize);

@@ -1,12 +1,14 @@
 const promptSync = require('prompt-sync')({ sigint: true });
 import { checkGuess } from './guess';
-import { generateSecretCode, validateInput } from './secretCode';
+import { generateSecretCode, validateInput, PossibleEntries } from './secretCode';
 
 function mastermind(secretCodeSize: number, maxGuess: number): void {
   let tries = 0;
 
   // computer to set the sequence secretly
   const secretCode = generateSecretCode(secretCodeSize);
+
+  console.log("code can be any of: " + PossibleEntries);
 
   // player starts guessing
   while (tries < maxGuess) {
@@ -28,6 +30,7 @@ function mastermind(secretCodeSize: number, maxGuess: number): void {
       console.log("White=" + rightGuessWrongPosition);
     } else {
       console.log("guess is invalid")
+      // TODO: print reason
     }
   }
 
