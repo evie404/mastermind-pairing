@@ -5,6 +5,7 @@ interface GuessResults {
 
 interface stringCountMap { [key: string]: number; }
 
+// checkGuess returns the number of right guesses given the guess and the secret code
 export function checkGuess(guess: string[], secretCode: string[]): GuessResults {
   let guessResults: GuessResults = {
     rightGuessRightPosition: 0,
