@@ -1,64 +1,41 @@
 const promptSync = require('prompt-sync')({ sigint: true });
 import { checkGuess } from './guess';
+import { generateSecretCode, validateInput } from './secretCode';
 
-const secretCodeSize = 4;
-let secretCode = Array<string>(secretCodeSize);  // 4 of entries
+function mastermind(secretCodeSize: number, maxGuess: number): void {
+  let tries = 0;
 
-const PossibleEntries: string[] = ["O", "G", "R", "Y", "P"]
+  // computer to set the sequence secretly
+  const secretCode = generateSecretCode(secretCodeSize);
 
-function isValidCharacter(entry: string): boolean {
-  return PossibleEntries.includes(entry)
-}
+  // player starts guessing
+  while (tries < maxGuess) {
+    console.log("guess #" + (tries + 1));
+    let guess = promptSync("what is your guess? ");
+    let guessChars = guess.split("");
+    let valid = validateInput(guessChars, secretCodeSize);
 
-// computer to set the sequence secretly
+    if (valid) {
+      tries++;
+      let { rightGuessRightPosition, rightGuessWrongPosition } = checkGuess(guessChars, secretCode);
 
-for (let i = 0; i < secretCodeSize; i++) {
-  secretCode[i] = PossibleEntries[Math.floor(Math.random() * PossibleEntries.length)];
-}
+      if (rightGuessRightPosition === secretCodeSize) {
+        console.log('you win!');
+        break
+      }
 
-// console.log(secretCode);
-
-const maxGuess = 10;
-let tries = 0;
-
-function validateInput(entry: string[]): boolean {
-  if (entry.length != secretCodeSize) {
-    // TODO: return error
-    return false;
-  }
-
-  for (let i = 0; i < entry.length; i++) {
-    if (!isValidCharacter(entry[i])) {
-      // TODO: return error
-      return false;
+      console.log("Black=" + rightGuessRightPosition);
+      console.log("White=" + rightGuessWrongPosition);
+    } else {
+      console.log("guess is invalid")
     }
   }
 
-  return true;
-}
-
-// player starts guessing
-while (tries < maxGuess) {
-  console.log("guess #" + (tries + 1));
-  let guess = promptSync("what is your guess? ");
-  let guessChars = guess.split("");
-  let valid = validateInput(guessChars);
-
-  if (valid) {
-    tries++;
-    let { rightGuessRightPosition, rightGuessWrongPosition } = checkGuess(guessChars, secretCode);
-
-    if (rightGuessRightPosition === secretCodeSize) {
-      console.log('Winner!');
-      break
-    }
-
-    console.log("Black=" + rightGuessRightPosition);
-    console.log("White=" + rightGuessWrongPosition);
-  } else {
-    console.log("guess is invalid")
+  if (tries == maxGuess) {
+    console.log("you lost :C")
   }
+
+  console.log("secret is: " + secretCode)
 }
 
-console.log("you lost :C")
-console.log("secret is: " + secretCode)
+mastermind(4, 10);
