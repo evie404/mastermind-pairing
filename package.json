@@ -15,7 +15,7 @@
   },
   "scripts": {
     "test": "jest",
-    "run": "ts-node main.ts"
+    "mastermind": "ts-node main.ts"
   },
   "repository": {
     "type": "git",
