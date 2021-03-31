@@ -1,5 +1,7 @@
 # mastermind-pairing
 
+Paired with @[aarsenault](https://github.com/aarsenault)
+
 To play:
 
 ```plaintext
